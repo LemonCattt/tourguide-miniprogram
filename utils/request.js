@@ -1,4 +1,4 @@
-const BASE_URL = 'https://moladog.top/api/v1';
+const { BASE_URL } = require('./config');
 
 function getToken() {
   return wx.getStorageSync('access_token');
