@@ -1,0 +1,113 @@
+<view class="container">
+  <!-- 未登录顶部登录引导 -->
+  <view class="login-banner" wx:if="{{!isLogin}}" bindtap="onTapLogin">
+    <view class="banner-left">
+      <text class="banner-icon">🧳</text>
+      <view class="banner-text">
+        <text class="banner-title">{{greeting}}</text>
+        <text class="banner-sub">登录后管理行程、发票和分房</text>
+      </view>
+    </view>
+    <view class="banner-btn">登录</view>
+  </view>
+
+  <!-- 已登录头部 -->
+  <view class="header" wx:if="{{isLogin}}">
+    <view class="header-left">
+      <text class="greeting">{{greeting}}</text>
+      <text class="subtitle">今日概览</text>
+    </view>
+    <view class="header-avatar">
+      {{userInfo.nickname ? userInfo.nickname[0] : '领'}}
+    </view>
+  </view>
+
+  <!-- 功能预览（未登录也可见） -->
+  <view class="stats-row">
+    <view class="stat-card" bindtap="onTapStat" data-type="tours">
+      <text class="stat-num">{{stats.tours || 0}}</text>
+      <text class="stat-label">进行中行程</text>
+    </view>
+    <view class="stat-card" bindtap="onTapStat" data-type="invoices">
+      <text class="stat-num">{{stats.invoices || 0}}</text>
+      <text class="stat-label">待用发票</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-num">¥{{stats.amount || '0'}}</text>
+      <text class="stat-label">可抵税金额</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <text class="section-title">快捷操作</text>
+    <view class="quick-grid">
+      <view class="quick-item" bindtap="onTapInvoiceUpload">
+        <view class="q-icon q-green">📸</view>
+        <text class="q-text">扫发票</text>
+      </view>
+      <view class="quick-item" bindtap="onTapRoomImport">
+        <view class="q-icon q-teal">📥</view>
+        <text class="q-text">导入名单</text>
+      </view>
+      <view class="quick-item" bindtap="onTapExpense">
+        <view class="q-icon q-amber">💳</view>
+        <text class="q-text">记一笔</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能亮点（未登录展示） -->
+  <view class="section" wx:if="{{!isLogin}}">
+    <text class="section-title">功能介绍</text>
+    <view class="feature-list">
+      <view class="feature-row-view">
+        <text class="f-icon">📸</text>
+        <view class="f-content">
+          <text class="f-title">拍照识别发票</text>
+          <text class="f-desc">OCR 智能识别发票信息，自动计算可抵税金额</text>
+        </view>
+      </view>
+      <view class="feature-row-view">
+        <text class="f-icon">🏨</text>
+        <view class="f-content">
+          <text class="f-title">智能分房</text>
+          <text class="f-desc">一键导入名单，快速分配房间</text>
+        </view>
+      </view>
+      <view class="feature-row-view">
+        <text class="f-icon">🗺</text>
+        <view class="f-content">
+          <text class="f-title">行程管理</text>
+          <text class="f-desc">创建并管理团队行程，随时掌握进度</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 已登录用户的行程区域 -->
+  <view class="section" wx:if="{{isLogin && recentTours.length > 0}}">
+    <text class="section-title">我的行程</text>
+    <view
+      class="tour-card"
+      wx:for="{{recentTours}}"
+      wx:key="id"
+      bindtap="onTapTour"
+      data-id="{{item.id}}"
+    >
+      <view class="tour-left">
+        <text class="tour-name">{{item.title}}</text>
+        <text class="tour-meta">📍 {{item.destination || '未设置'}} · 📅 {{item.startDate || ''}}</text>
+      </view>
+      <view class="tour-right">
+        <text class="badge {{item.status === 'ongoing' ? 'badge-green' : item.status === 'upcoming' ? 'badge-blue' : item.status === 'ended' ? 'badge-gray' : 'badge-gray'}}">{{item.status === 'ongoing' ? '进行中' : item.status === 'upcoming' ? '即将出发' : item.status === 'ended' ? '已结束' : item.status || '未知'}}</text>
+        <text class="tour-date">{{item.startDate || ''}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty-state" wx:if="{{isLogin && recentTours.length === 0}}">
+    <text class="empty-icon">🗺</text>
+    <text class="empty-text">还没有行程</text>
+    <text class="empty-sub">点击「行程」tab 创建你的第一个行程</text>
+  </view>
+</view>

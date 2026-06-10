@@ -1,0 +1,74 @@
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stat-item {
+  background: #F5F6FA;
+  border-radius: 8px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.stat-num { font-size: 22px; font-weight: 700; color: #1D1D1B; }
+.stat-num.green { color: #1D9E75; }
+.stat-num.amber { color: #BA7517; }
+.stat-label { font-size: 12px; color: #888780; }
+
+.bar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.bar-label {
+  width: 36px;
+  font-size: 12px;
+  color: #5E5F63;
+  text-align: right;
+}
+.bar-track {
+  flex: 1;
+  height: 8px;
+  background: #EEEEF0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: #1D9E75;
+  border-radius: 4px;
+  transition: width 0.3s;
+}
+.bar-value {
+  width: 64px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1D9E75;
+  text-align: right;
+}
+
+.inv-stats {
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0;
+}
+.inv-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.inv-num { font-size: 20px; font-weight: 700; color: #1D1D1B; }
+.inv-num.used { color: #888780; }
+.inv-label { font-size: 12px; color: #888780; }
+
+.loading-state {
+  text-align: center;
+  padding: 60px 0;
+  font-size: 14px;
+  color: #B0B1B5;
+}

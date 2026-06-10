@@ -1,0 +1,66 @@
+<view class="container">
+  <block wx:if="{{!loading}}">
+    <!-- 总览卡片 -->
+    <view class="card" wx:if="{{overview}}">
+      <view class="section-title">数据总览</view>
+      <view class="stats-grid">
+        <view class="stat-item">
+          <text class="stat-num">{{overview.tours.total || 0}}</text>
+          <text class="stat-label">行程总数</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-num green">¥{{expensesTotalText}}</text>
+          <text class="stat-label">总费用</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-num">{{overview.invoices.total || 0}}</text>
+          <text class="stat-label">发票总数</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-num amber">¥{{pendingAmountText}}</text>
+          <text class="stat-label">待使用</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 费用分类 -->
+    <view class="card" wx:if="{{categoryBars.length > 0}}">
+      <view class="section-title">费用分类</view>
+      <view class="bar-item" wx:for="{{categoryBars}}" wx:key="key">
+        <text class="bar-label">{{item.categoryLabel}}</text>
+        <view class="bar-track">
+          <view class="bar-fill" style="width: {{item.barWidth}}%"></view>
+        </view>
+        <text class="bar-value">¥{{item.amountText}}</text>
+      </view>
+    </view>
+
+    <!-- 发票状态 -->
+    <view class="card" wx:if="{{invoiceReport}}">
+      <view class="section-title">发票状态</view>
+      <view class="inv-stats">
+        <view class="inv-stat">
+          <text class="inv-num">{{invoiceReport.pending || 0}}</text>
+          <text class="inv-label">待使用</text>
+        </view>
+        <view class="inv-stat">
+          <text class="inv-num used">{{invoiceReport.used || 0}}</text>
+          <text class="inv-label">已使用</text>
+        </view>
+        <view class="inv-stat">
+          <text class="inv-num">¥{{invoiceTotalText}}</text>
+          <text class="inv-label">总金额</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!overview && !expenseReport && !invoiceReport}}">
+      <text class="empty-text">暂无数据</text>
+    </view>
+  </block>
+
+  <view class="loading-state" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>

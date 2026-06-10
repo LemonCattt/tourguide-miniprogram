@@ -1,0 +1,108 @@
+<view class="container">
+  <block wx:if="{{!loading && invoice}}">
+    <!-- 发票头 -->
+    <view class="card">
+      <view class="invoice-header">
+        <view class="invoice-type {{invoice.status}}">{{statusText}}</view>
+        <text class="invoice-amount">¥{{amountText}}</text>
+      </view>
+      <!-- 查验状态和类型标签 -->
+      <view class="invoice-tags">
+        <text class="type-tag tag-{{invoice.type}}">{{typeTagText}}</text>
+      </view>
+    </view>
+
+    <!-- 发票信息 -->
+    <view class="card">
+      <view class="section-title">票面信息</view>
+      <view class="info-row">
+        <text class="info-label">发票号码</text>
+        <text class="info-value">{{invoice.invoiceNumber || '-'}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">发票代码</text>
+        <text class="info-value">{{invoice.invoiceCode || '-'}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">开票日期</text>
+        <text class="info-value">{{dateText}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">金额</text>
+        <text class="info-value amount">¥{{amountText}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">税额</text>
+        <text class="info-value">{{taxText}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">卖方名称</text>
+        <text class="info-value">{{sellerNameText}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">买方名称</text>
+        <text class="info-value">{{buyerNameText}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">卖方税号</text>
+        <text class="info-value">{{sellerTaxNoText}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">买方税号</text>
+        <text class="info-value">{{buyerTaxNoText}}</text>
+      </view>
+    </view>
+
+    <!-- 核销查验结果 -->
+    <view class="card" wx:if="{{showVerifySection}}">
+      <view class="section-title">核销查验</view>
+      <view class="verify-status-row">
+        <text class="verify-status-tag {{verifyClassName}}">{{verifyLabel}}</text>
+      </view>
+      <view class="info-row" wx:for="{{verifyDetailItems}}" wx:key="label">
+        <text class="info-label">{{item.label}}</text>
+        <text class="info-value">{{item.value}}</text>
+      </view>
+    </view>
+
+    <!-- 关联行程 -->
+    <view class="card" wx:if="{{invoice.tour}}">
+      <view class="section-title">关联行程</view>
+      <view class="info-row">
+        <text class="info-label">行程名称</text>
+        <text class="info-value">{{invoice.tour.title || '-'}}</text>
+      </view>
+    </view>
+
+    <!-- 原始文件 -->
+    <view class="card" wx:if="{{invoice.images && invoice.images.length > 0}}">
+      <view class="section-title">原始文件</view>
+      <view class="file-card" bindtap="previewFile">
+        <view class="file-icon">📄</view>
+        <view class="file-info">
+          <text class="file-name">{{fileName}}</text>
+          <text class="file-tip">点击查看文件</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 备注 -->
+    <view class="card" wx:if="{{invoice.remark}}">
+      <view class="section-title">备注</view>
+      <text class="remark-text">{{invoice.remark}}</text>
+    </view>
+
+    <!-- 操作按钮区 -->
+    <view class="card action-area">
+      <!-- 编辑与删除：所有状态可用 -->
+      <view class="btn-group secondary-actions">
+        <button class="btn-edit" bindtap="onEdit">编辑</button>
+        <button class="btn-delete" bindtap="onDelete">删除</button>
+      </view>
+    </view>
+  </block>
+
+  <view class="empty-state" wx:elif="{{!loading}}">
+    <text class="empty-text">发票不存在</text>
+  </view>
+</view>

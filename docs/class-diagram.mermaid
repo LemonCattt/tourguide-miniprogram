@@ -1,0 +1,173 @@
+classDiagram
+    direction TB
+
+    class Invoice {
+        +string id
+        +string tripId?
+        +string creatorId
+        +number amount?
+        +string invoiceDate?
+        +InvoiceType type?
+        +InvoiceCategory category
+        +string remark?
+        +string invoiceCode?
+        +string invoiceNumber?
+        +Record ocrData?
+        +string[] images
+        +InvoiceStatus status
+        +string sellerName?
+        +string buyerName?
+        +number tax?
+        +string sellerTaxNo?
+        +string buyerTaxNo?
+        +boolean ocrFailed
+        +string fileType?
+        +Date createdAt
+        +Date updatedAt
+    }
+
+    class InvoiceType {
+        <<enumeration>>
+        VAT_SPECIAL
+        VAT_NORMAL
+        VAT_ELECTRONIC
+        TRAIN_TICKET
+        TAXI_RECEIPT
+        FLIGHT_ITINERARY
+        OTHER
+    }
+
+    class InvoiceCategory {
+        <<enumeration>>
+        TRANSPORT
+        HOTEL
+        FOOD
+        OFFICE
+        OTHER
+    }
+
+    class InvoiceStatus {
+        <<enumeration>>
+        APPROVED
+    }
+
+    Invoice --> InvoiceType
+    Invoice --> InvoiceCategory
+    Invoice --> InvoiceStatus
+
+    class UploadAndCreateDto {
+        +File file
+        +string tripId?
+        +string category?
+    }
+
+    class ExportDataQueryDto {
+        +string ids
+    }
+
+    class ExportDataItem {
+        +string id
+        +string type
+        +number amount
+        +string invoiceDate
+        +string sellerName
+        +string fileUrl
+        +string fileName
+    }
+
+    class ExportDataResponse {
+        +ExportDataItem[] items
+        +number totalAmount
+        +number count
+    }
+
+    class InvoiceService {
+        -Repository invoiceRepository
+        -OcrService ocrService
+        -UploadService uploadService
+        +findAll(params) Promise~Paginated~
+        +findOne(id, userId, role) Promise~Invoice~
+        +create(dto, userId) Promise~Invoice~
+        +update(id, dto, userId, role) Promise~Invoice~
+        +remove(id, userId, role) Promise~void~
+        +ocrRecognize(imageUrl, invoiceType?) Promise~OCRResult~
+        +batchCreate(items, userId) Promise~BatchResult~
+        +batchDelete(ids, userId, role) Promise~void~
+        +optimize(dto, userId, role) Promise~Invoice~
+        +uploadAndCreate(file, tripId?, category?, userId) Promise~Invoice~
+        +exportData(ids, userId, role) Promise~ExportDataResponse~
+        -checkDuplicate(code, number, date, excludeId?) Promise~Invoice~
+    }
+
+    class UploadService {
+        -MinioClient minioClient
+        -string bucket
+        +uploadFile(file, datePath) Promise~UploadResult~
+        +getFileStream(objectPath) Promise~StreamResult~
+        +getFileInfo(objectPath) Promise~FileInfo~
+        +deleteFile(objectPath) Promise~void~
+        +fileExists(objectPath) Promise~boolean~
+        +buildFileUrl(filename, datePath, baseUrl) string
+        +getPresignedUrl(objectPath, expirySeconds) Promise~string~
+    }
+
+    class OcrService {
+        +recognizeInvoice(fileUrl) Promise~OCRResult~
+        -callAliyunOCR(action, fileUrl, type?) Promise~any~
+        -recognizeWithDashScope(fileUrl, mimeType) Promise~any~
+        -mapInvoiceResult(data) Record
+        -mapAllTextResult(data) Record
+        -mapStructureResult(data) Record
+        -downloadFile(fileUrl) Promise~Buffer~
+        -convertPdfToImageBase64(pdfData) Promise~string~
+        -formatDateOCR(str) string
+        -parseAmount(val) number
+    }
+
+    class InvoiceController {
+        +findAll(userId, role, ...filters) Promise~Paginated~
+        +findOne(id, userId, role) Promise~Invoice~
+        +create(dto, userId) Promise~Invoice~
+        +ocrRecognize(dto) Promise~OCRResult~
+        +batchCreate(dto, userId) Promise~BatchResult~
+        +batchDelete(dto, userId, role) Promise~void~
+        +optimize(dto, userId, role) Promise~Invoice~
+        +update(id, dto, userId, role) Promise~Invoice~
+        +remove(id, userId, role) Promise~void~
+        +uploadAndCreate(file, tripId?, category?, userId) Promise~Invoice~
+        +exportData(dto, userId, role) Promise~ExportDataResponse~
+    }
+
+    InvoiceService --> Invoice : manages
+    InvoiceService --> OcrService : uses
+    InvoiceService --> UploadService : uses
+    InvoiceController --> InvoiceService : calls
+    UploadAndCreateDto --> InvoiceController : input
+    ExportDataQueryDto --> InvoiceController : input
+    ExportDataResponse --> ExportDataItem : contains
+
+    class BatchUploader {
+        +FileItem[] taskQueue
+        +number maxConcurrency
+        +boolean running
+        +addFiles(files) void
+        +start() Promise~void~
+        +pause() void
+        +resume() void
+        +onProgress(callback) void
+        +onComplete(callback) void
+        -processNext() Promise~void~
+        -uploadOne(item) Promise~void~
+    }
+
+    class FileItem {
+        +string id
+        +string filePath
+        +string fileName
+        +string status
+        +number progress
+        +Invoice result?
+        +string error?
+    }
+
+    BatchUploader --> FileItem : manages

@@ -1,0 +1,29 @@
+<view class="container">
+  <block wx:if="{{ann}}">
+    <view class="card">
+      <text class="ann-title">{{ann.title}}</text>
+      <view class="ann-meta">
+        <text class="meta-dest">{{ann.destination || '通用公告'}}</text>
+        <text class="meta-time">{{timeText}}</text>
+      </view>
+      <view class="ann-tags" wx:if="{{ann.tags}}">
+        <text class="tag" wx:for="{{ann.tags}}" wx:for-item="t" wx:key="*this">{{t}}</text>
+      </view>
+    </view>
+
+    <view class="card">
+      <text class="ann-content">{{ann.content}}</text>
+    </view>
+
+    <view class="card" wx:if="{{ann.attachments && ann.attachments.length > 0}}">
+      <view class="section-title">附件 ({{ann.attachments.length}})</view>
+      <view class="attachment-item" wx:for="{{ann.attachments}}" wx:key="index">
+        <text class="att-name">{{item.name || item.fileName || '附件'}}</text>
+      </view>
+    </view>
+  </block>
+
+  <view class="empty-state" wx:elif="{{!loading}}">
+    <text class="empty-text">公告不存在</text>
+  </view>
+</view>

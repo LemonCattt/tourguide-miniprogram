@@ -1,0 +1,75 @@
+<!-- 分房任务列表 -->
+<view class="container">
+  <!-- 顶部操作栏 -->
+  <view class="action-bar flex-between">
+    <text class="bar-title">分房任务 ({{total}})</text>
+    <view class="import-btn" bindtap="onGoImport">
+      <text class="import-icon">📥</text>
+      <text class="import-text">导入名单</text>
+    </view>
+  </view>
+
+  <!-- 任务列表 -->
+  <view wx:if="{{list.length > 0}}" class="task-list">
+    <view
+      class="task-card"
+      wx:for="{{list}}"
+      wx:key="id"
+      bindtap="onTapDetail"
+      data-id="{{item.id}}"
+    >
+      <view class="task-header flex-between">
+        <view class="flex-row">
+          <text class="task-icon">🏨</text>
+          <view class="task-info">
+            <text class="task-title">{{item.title || '分房任务'}}</text>
+            <text class="task-hotel text-ellipsis" wx:if="{{item.hotelName}}">
+              {{item.hotelName}}
+            </text>
+          </view>
+        </view>
+        <text class="arrow">›</text>
+      </view>
+
+      <view class="task-stats">
+        <view class="task-stat">
+          <text class="stat-num">{{item.personCount || 0}}</text>
+          <text class="stat-desc">总人数</text>
+        </view>
+        <view class="stat-divider-v"></view>
+        <view class="task-stat">
+          <text class="stat-num">{{item.roomCount || 0}}</text>
+          <text class="stat-desc">房间数</text>
+        </view>
+        <view class="stat-divider-v"></view>
+        <view class="task-stat">
+          <text class="stat-num">{{item.maleCount || 0}}男{{item.femaleCount || 0}}女</text>
+          <text class="stat-desc">男女比例</text>
+        </view>
+      </view>
+
+      <view class="task-footer flex-between">
+        <text class="task-time">{{item.createTimeText}}</text>
+        <view class="flex-row">
+          <text class="action-link" catchtap="onShare" data-id="{{item.id}}">分享</text>
+          <text class="action-link danger" catchtap="onDelete" data-id="{{item.id}}">删除</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载更多 -->
+  <view class="load-more" wx:if="{{hasMore}}">
+    <text>{{isLoadingMore ? '加载中...' : '上拉加载更多'}}</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{list.length === 0 && !isLoading}}">
+    <text class="empty-icon">🏨</text>
+    <text class="empty-text">暂无分房任务</text>
+    <text class="empty-sub">导入 Excel 名单自动分房</text>
+    <button class="btn-primary empty-btn" bindtap="onGoImport">
+      立即导入
+    </button>
+  </view>
+</view>

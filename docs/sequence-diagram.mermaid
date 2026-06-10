@@ -1,0 +1,128 @@
+sequenceDiagram
+    actor User as 用户
+    participant Upload as upload页面
+    participant Progress as batch-progress页面
+    participant Uploader as BatchUploader
+    participant API as request.js
+    participant Server as NestJS后端
+    participant MinIO as MinIO OSS
+    participant OCR as 阿里云OCR
+
+    User->>Upload: 点击"选择发票"
+    Upload->>Upload: wx.chooseMessageFile({count:20, extension:['pdf','jpg','jpeg','png']})
+    Upload->>Upload: 校验数量≤20 → 构造fileList
+    Upload->>Progress: wx.navigateTo({url: 'batch-progress', fileList})
+
+    Progress->>Uploader: new BatchUploader(fileList)
+    Progress->>Uploader: uploader.onProgress(updateUI)
+    Progress->>Uploader: uploader.start()
+
+    loop 逐个处理（串行队列）
+        Uploader->>Uploader: 取队首 item，状态→uploading
+
+        Uploader->>API: wx.uploadFile({url:'/invoices/upload-and-create', filePath, formData:{tripId?,category?}})
+
+        Note over Uploader,API: 上传进度回调 → updateUI (progress%)
+
+        API->>Server: POST /api/v1/invoices/upload-and-create (multipart/form-data)
+
+        Server->>Server: 校验文件类型/大小
+
+        Server->>MinIO: putObject → invoices/YYYY/MM/DD/{ts}-{rand}.{ext}
+        MinIO-->>Server: etag, objectPath
+
+        Uploader->>Uploader: 状态→ocr_processing
+
+        Server->>Server: 构建 MinIO 公网 URL
+
+        Server->>OCR: recognizeInvoice(fileUrl)
+        alt OCR 成功
+            OCR-->>Server: {invoiceCode, invoiceNumber, amount, date, sellerName, ...}
+            Server->>Server: 查重（三要素）
+            alt 不重复
+                Server->>Server: 创建 Invoice (ocrFailed=false)
+                Server-->>API: 200 {success:true, data:Invoice}
+                Uploader->>Uploader: 状态→done
+            else 重复
+                Server-->>API: 409 {code:409, message:'发票已存在'}
+                Uploader->>Uploader: 状态→duplicate
+            end
+        else OCR 失败
+            OCR-->>Server: throw error
+            Server->>Server: 创建 Invoice (ocrFailed=true, 仅含images+fileType)
+            Server-->>API: 200 {success:true, data:Invoice}
+            Uploader->>Uploader: 状态→done
+        end
+
+        Uploader->>Progress: onProgress回调 → setData 更新该item卡片
+    end
+
+    Uploader->>Progress: onComplete({total, success, failed, duplicate})
+    Progress->>Progress: 展示统计汇总面板
+
+---
+
+sequenceDiagram
+    actor User as 用户
+    participant List as list页面
+    participant API as request.js
+    participant Server as NestJS后端
+    participant MinIO as MinIO
+    participant WX as 微信客户端
+
+    User->>List: 点击"批量模式"
+    List->>List: batchMode=true, 显示复选框
+    User->>List: 选中多张发票
+    User->>List: 点击"导出到聊天"
+
+    List->>API: GET /invoices/export-data?ids=id1,id2,id3
+
+    API->>Server: GET /api/v1/invoices/export-data?ids=id1,id2,id3
+    Server->>Server: 查询发票列表，校验权限
+    Server->>Server: 计算汇总金额
+
+    loop 每张发票
+        Server->>MinIO: presignedGetObject(objectPath, 3600)
+        MinIO-->>Server: presigned URL (1h有效期)
+    end
+
+    Server-->>API: {items:[{id,type,amount,invoiceDate,sellerName,fileUrl,fileName}], totalAmount, count}
+
+    List->>List: 拼接聊天消息文本
+    Note over List: "📋 发票汇总\n共3张，合计 ¥1,200.50\n\n1. 增值税普通发票\n   金额：¥500.00 日期：2026-05-20 卖方：XX公司"
+
+    List->>WX: wx.shareFileMessage({filePath: 首张发票文件, ...})
+    Note over List,WX: 分享首张文件+文本摘要
+
+    opt 多文件场景
+        List->>List: 提示"已依次分享，请在聊天中查看"
+    end
+
+---
+
+sequenceDiagram
+    participant Server as InvoiceService.uploadAndCreate
+    participant MinIO as MinIO
+    participant OCR as OcrService
+
+    Server->>MinIO: putObject (文件上传)
+    MinIO-->>Server: objectPath
+
+    Server->>OCR: recognizeInvoice(publicUrl)
+
+    alt OCR 返回有效数据
+        OCR-->>Server: {invoiceCode, amount, date, ...}
+        Server->>Server: 检查关键字段是否为空
+        alt 关键字段完整（amount或date至少有一个）
+            Server->>Server: 查重 → 创建 Invoice (ocrFailed=false)
+        else 关键字段全空
+            Server->>Server: 创建 Invoice (ocrFailed=true)
+            Note over Server: 仅保存 images + fileType，无OCR数据
+        end
+    else OCR 抛出异常（网络/额度/解析失败）
+        OCR-->>Server: throw Error
+        Server->>Server: 创建 Invoice (ocrFailed=true)
+        Note over Server: 仅保存 images + fileType，ocrData={error: msg}
+    end
+
+    Server-->>Client: 200 Invoice (ocrFailed字段标识)

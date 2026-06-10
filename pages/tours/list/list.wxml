@@ -1,0 +1,24 @@
+<view class="container">
+  <view class="flex-between" style="padding:20rpx 28rpx;">
+    <text class="section-title" style="margin:0;">行程列表</text>
+    <text class="btn-outline" style="font-size:24rpx;padding:8rpx 24rpx;" bindtap="goCreate">+ 新建</text>
+  </view>
+
+  <view class="tour-card" wx:for="{{tours}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+    <view class="tour-left">
+      <text class="tour-name">{{item.title}}</text>
+      <text class="tour-meta">📍 {{item.destination || '未设置'}} · 📅 {{item.startDate}} ~ {{item.endDate}}</text>
+    </view>
+    <view class="tour-right">
+      <text class="badge {{item.status === 'ongoing' ? 'badge-green' : item.status === 'upcoming' ? 'badge-blue' : item.status === 'ended' ? 'badge-gray' : 'badge-gray'}}">{{item.statusText}}</text>
+    </view>
+  </view>
+
+  <view class="loading-more" wx:if="{{loading}}">加载中...</view>
+
+  <view class="empty-state" wx:if="{{!loading && tours.length === 0}}">
+    <text class="empty-icon">🗺</text>
+    <text class="empty-text">暂无行程</text>
+    <text class="empty-sub">创建你的第一个行程开始管理</text>
+  </view>
+</view>

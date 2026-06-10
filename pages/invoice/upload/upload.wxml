@@ -1,0 +1,113 @@
+<!-- 上传发票 - 批量上传进度面板 -->
+<view class="container">
+
+  <!-- ===== 阶段0：未开始 - 选择区 ===== -->
+  <view wx:if="{{phase === 'idle'}}" class="select-area">
+    <view class="select-card">
+      <text class="select-icon">📄</text>
+      <text class="select-title">批量上传发票</text>
+      <text class="select-hint">选择发票文件，支持 PDF/JPG/PNG，一次最多 20 个</text>
+      <button class="select-btn" bindtap="onChooseFiles">选择文件</button>
+    </view>
+  </view>
+
+  <!-- ===== 阶段1：处理中 - 进度面板 ===== -->
+  <view wx:if="{{phase === 'processing'}}" class="progress-panel">
+
+    <!-- 进度头部 -->
+    <view class="progress-header">
+      <text class="progress-title">处理中...</text>
+      <text class="progress-count">{{completedCount}}/{{totalCount}} 完成</text>
+      <view class="progress-bar-wrapper">
+        <view class="progress-bar-fill" style="width: {{progressPercent}}%;"></view>
+      </view>
+    </view>
+
+    <!-- 文件列表 -->
+    <view class="file-list">
+      <view
+        class="file-item file-item-{{item.state}}"
+        wx:for="{{files}}"
+        wx:key="path"
+        wx:for-item="item"
+      >
+        <!-- 状态图标 -->
+        <view class="file-status-icon">
+          <text wx:if="{{item.state === 'waiting'}}" class="status-icon waiting">○</text>
+          <text wx:if="{{item.state === 'uploading'}}" class="status-icon uploading">↻</text>
+          <text wx:if="{{item.state === 'done'}}" class="status-icon done">✓</text>
+          <text wx:if="{{item.state === 'failed'}}" class="status-icon failed">✕</text>
+          <text wx:if="{{item.state === 'duplicate'}}" class="status-icon duplicate">≣</text>
+        </view>
+
+        <!-- 文件信息 -->
+        <view class="file-info">
+          <text class="file-name">{{item.name || '未知文件'}}</text>
+          <text class="file-meta" wx:if="{{item.state === 'done' && item.result}}">
+            <text wx:if="{{item.result.amount}}">¥{{item.result.amount}}</text>
+            <text wx:else>--</text>
+          </text>
+          <text class="file-state-text state-{{item.state}}">
+            <text wx:if="{{item.state === 'waiting'}}">等待中</text>
+            <text wx:if="{{item.state === 'uploading'}}">上传识别中...</text>
+            <text wx:if="{{item.state === 'done'}}">完成</text>
+            <text wx:if="{{item.state === 'failed'}}">{{item.error || '失败'}}</text>
+            <text wx:if="{{item.state === 'duplicate'}}">{{item.error || '重复'}}</text>
+          </text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 取消按钮（仅在还有等待中的文件时显示） -->
+    <view wx:if="{{hasWaiting}}" class="cancel-area">
+      <button class="cancel-btn" bindtap="onCancel">取消剩余任务</button>
+    </view>
+  </view>
+
+  <!-- ===== 阶段2：完成 - 结果总结 ===== -->
+  <view wx:if="{{phase === 'done'}}" class="result-area">
+
+    <!-- 成功图标 -->
+    <view class="result-icon-area">
+      <text class="result-icon">✅</text>
+      <text class="result-title">上传完成</text>
+    </view>
+
+    <!-- 统计卡片 -->
+    <view class="result-summary">
+      <view class="summary-item success">
+        <text class="summary-number">{{summary.done}}</text>
+        <text class="summary-label">成功</text>
+      </view>
+      <view class="summary-item skip" wx:if="{{summary.duplicate > 0}}">
+        <text class="summary-number">{{summary.duplicate}}</text>
+        <text class="summary-label">跳过</text>
+      </view>
+      <view class="summary-item fail" wx:if="{{summary.failed > 0}}">
+        <text class="summary-number">{{summary.failed}}</text>
+        <text class="summary-label">失败</text>
+      </view>
+    </view>
+
+    <!-- 汇总文字 -->
+    <view class="result-text">
+      成功 {{summary.done}} 张<text wx:if="{{summary.duplicate > 0}}">，跳过 {{summary.duplicate}} 张</text><text wx:if="{{summary.failed > 0}}">，失败 {{summary.failed}} 张</text>
+    </view>
+
+    <!-- 失败文件列表（含错误信息） -->
+    <view wx:if="{{failedFiles.length > 0}}" class="failed-list">
+      <view class="failed-item" wx:for="{{failedFiles}}" wx:key="path" wx:for-item="f">
+        <text class="failed-name">{{f.name}}</text>
+        <text class="failed-reason">{{f.error || '未知错误'}}</text>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="result-actions">
+      <button wx:if="{{failedFiles.length > 0}}" class="btn-outline retry-btn" bindtap="onRetryFailed">重试失败项</button>
+      <button wx:if="{{duplicateFiles.length > 0 && summary.done === 0}}" class="btn-outline retry-btn" bindtap="onChooseFiles">重新选择</button>
+      <button class="btn-primary back-btn" bindtap="onBackToList">返回列表</button>
+    </view>
+  </view>
+
+</view>

@@ -1,0 +1,23 @@
+<view class="container">
+  <view class="flex-between" style="padding:20rpx 28rpx;">
+    <text class="section-title" style="margin:0;">支出明细</text>
+    <text class="btn-outline" style="font-size:24rpx;padding:8rpx 24rpx;" bindtap="goAdd">+ 记一笔</text>
+  </view>
+
+  <view class="summary-bar" wx:if="{{summary}}">
+    <text>合计 ¥{{summary.total || 0}}</text>
+  </view>
+
+  <view class="expense-card" wx:for="{{list}}" wx:key="id">
+    <view class="exp-left">
+      <text class="exp-title">{{item.note || '未命名'}}</text>
+      <text class="exp-meta">{{item.categoryText}} · {{item.expenseDate || ''}}</text>
+    </view>
+    <text class="exp-amount">¥{{item.amount || 0}}</text>
+  </view>
+
+  <view class="empty-state" wx:if="{{!loading && list.length === 0}}">
+    <text class="empty-icon">💳</text>
+    <text class="empty-text">暂无支出记录</text>
+  </view>
+</view>

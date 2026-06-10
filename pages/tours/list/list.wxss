@@ -1,0 +1,5 @@
+.tour-card { background:#fff; border-radius:20rpx; margin:0 24rpx 12rpx; padding:24rpx 28rpx; display:flex; justify-content:space-between; align-items:center; }
+.tour-left { flex:1; min-width:0; }
+.tour-name { font-size:30rpx; font-weight:600; color:#2C2C2A; }
+.tour-meta { font-size:24rpx; color:#888780; margin-top:6rpx; display:block; }
+.tour-right { margin-left:16rpx; text-align:right; }

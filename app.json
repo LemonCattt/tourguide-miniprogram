@@ -1,0 +1,71 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/login/login",
+    "pages/tours/list/list",
+    "pages/tours/detail/detail",
+    "pages/tours/form/form",
+    "pages/invoice/list/list",
+    "pages/invoice/upload/upload",
+    "pages/invoice/detail/detail",
+    "pages/invoice/optimize/optimize",
+    "pages/expenses/list/list",
+    "pages/expenses/form/form",
+    "pages/room/list/list",
+    "pages/room/detail/detail",
+    "pages/room/import/import",
+    "pages/announcements/list/list",
+    "pages/announcements/detail/detail",
+    "pages/reports/index/index",
+    "pages/mine/mine",
+    "pages/webview/webview"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#1D9E75",
+    "navigationBarTitleText": "领队助手",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#F5F6FA"
+  },
+  "tabBar": {
+    "color": "#888780",
+    "selectedColor": "#1D9E75",
+    "borderStyle": "white",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "工作台",
+        "iconPath": "images/tab/home.png",
+        "selectedIconPath": "images/tab/home-active.png"
+      },
+      {
+        "pagePath": "pages/tours/list/list",
+        "text": "行程",
+        "iconPath": "images/tab/tours.png",
+        "selectedIconPath": "images/tab/tours-active.png"
+      },
+      {
+        "pagePath": "pages/invoice/list/list",
+        "text": "发票",
+        "iconPath": "images/tab/invoice.png",
+        "selectedIconPath": "images/tab/invoice-active.png"
+      },
+      {
+        "pagePath": "pages/room/list/list",
+        "text": "分房",
+        "iconPath": "images/tab/room.png",
+        "selectedIconPath": "images/tab/room-active.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "images/tab/mine.png",
+        "selectedIconPath": "images/tab/mine-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

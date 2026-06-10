@@ -1,0 +1,178 @@
+/* ═══════════════════════════════════════
+   领队助手 · 商务自然风 全局样式系统
+   白底 + 墨绿(#1D9E75) + 蓝色辅助(#378ADD)
+   ═══════════════════════════════════════ */
+
+page {
+  --green: #1D9E75;
+  --green-light: #E1F5EE;
+  --green-dark: #0F6E56;
+  --blue: #378ADD;
+  --blue-light: #E6F1FB;
+  --amber: #BA7517;
+  --amber-light: #FAEEDA;
+  --red: #E24B4A;
+  --red-light: #FCEBEb;
+  --gray-100: #F5F6FA;
+  --gray-200: #E8E9ED;
+  --gray-400: #888780;
+  --gray-600: #5F5E5A;
+  --gray-800: #2C2C2A;
+  --white: #FFFFFF;
+  --radius-sm: 8rpx;
+  --radius-md: 16rpx;
+  --radius-lg: 20rpx;
+  --radius-xl: 24rpx;
+  --text-xs: 22rpx;
+  --text-sm: 26rpx;
+  --text-base: 28rpx;
+  --text-md: 30rpx;
+  --text-lg: 34rpx;
+  --text-xl: 40rpx;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+  font-size: var(--text-base);
+  color: var(--gray-800);
+  background-color: var(--gray-100);
+  box-sizing: border-box;
+  line-height: 1.5;
+}
+
+.container {
+  min-height: 100vh;
+  padding-bottom: 20rpx;
+}
+
+.flex-row { display: flex; flex-direction: row; align-items: center; }
+.flex-col { display: flex; flex-direction: column; }
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+.flex-center { display: flex; justify-content: center; align-items: center; }
+.flex-1 { flex: 1; }
+
+.card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  margin: 0 24rpx 16rpx;
+  padding: 28rpx;
+}
+
+.card-flush {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  margin: 16rpx 24rpx;
+  padding: 28rpx;
+}
+
+.section {
+  margin-bottom: 24rpx;
+}
+
+.section-title {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--gray-800);
+  margin: 0 24rpx 16rpx;
+}
+
+.btn-primary {
+  background: var(--green);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-base);
+  padding: 20rpx 0;
+  text-align: center;
+}
+
+.btn-primary:active { opacity: 0.85; }
+.btn-primary[disabled] { background: var(--gray-400); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--green);
+  border: 2rpx solid var(--green);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  padding: 14rpx 28rpx;
+  text-align: center;
+}
+
+.btn-outline:active { background: var(--green-light); }
+
+.text-ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.text-ellipsis-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.divider {
+  height: 1rpx;
+  background: var(--gray-200);
+  margin: 20rpx 0;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+}
+.empty-state .empty-icon { font-size: 80rpx; margin-bottom: 24rpx; }
+.empty-state .empty-text { font-size: var(--text-base); color: var(--gray-400); margin-bottom: 8rpx; }
+.empty-state .empty-sub { font-size: var(--text-sm); color: var(--gray-400); }
+
+.tag {
+  display: inline-block;
+  padding: 4rpx 14rpx;
+  border-radius: 6rpx;
+  font-size: var(--text-xs);
+  font-weight: 500;
+}
+
+.tag-green { background: var(--green-light); color: var(--green); }
+.tag-blue { background: var(--blue-light); color: var(--blue); }
+.tag-amber { background: var(--amber-light); color: var(--amber); }
+.tag-red { background: var(--red-light); color: var(--red); }
+.tag-gray { background: var(--gray-200); color: var(--gray-600); }
+
+.badge {
+  display: inline-block;
+  padding: 2rpx 12rpx;
+  border-radius: 20rpx;
+  font-size: var(--text-xs);
+}
+
+.badge-green { background: var(--green-light); color: var(--green); }
+.badge-blue { background: var(--blue-light); color: var(--blue); }
+.badge-amber { background: var(--amber-light); color: var(--amber); }
+.badge-red { background: var(--red-light); color: var(--red); }
+
+.stat-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 20rpx 16rpx;
+  text-align: center;
+}
+
+.stat-num {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--green);
+}
+
+.stat-label {
+  font-size: var(--text-xs);
+  color: var(--gray-400);
+  margin-top: 4rpx;
+}
+
+.loading-more {
+  text-align: center;
+  padding: 24rpx;
+  font-size: var(--text-sm);
+  color: var(--gray-400);
+}

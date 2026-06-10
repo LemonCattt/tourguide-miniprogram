@@ -1,0 +1,118 @@
+<!-- 发票列表 -->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input-wrapper">
+      <text class="search-icon">🔍</text>
+      <input
+        class="search-input"
+        placeholder="搜索发票名称/公司"
+        value="{{keyword}}"
+        bindinput="onSearchInput"
+        confirm-type="search"
+        bindconfirm="onSearch"
+      />
+    </view>
+    <view class="upload-btn" bindtap="onGoUpload" wx:if="{{!batchMode}}">
+      <text class="upload-icon">＋</text>
+    </view>
+    <view class="batch-btn" bindtap="toggleBatchMode" wx:if="{{!batchMode}}">
+      <text class="batch-icon">多选</text>
+    </view>
+    <view class="batch-cancel-btn" bindtap="toggleBatchMode" wx:if="{{batchMode}}">
+      <text>取消</text>
+    </view>
+  </view>
+
+  <!-- 筛选栏 -->
+  <view class="filter-bar" wx:if="{{!batchMode}}">
+    <picker mode="selector" range="{{statusLabels}}" bindchange="onStatusFilterChange" value="{{statusPickerIndex}}">
+      <view class="filter-item">
+        <text>{{statusLabels[statusPickerIndex]}}</text>
+        <text class="filter-arrow">▼</text>
+      </view>
+    </picker>
+    <picker mode="selector" range="{{tours}}" range-key="title" bindchange="onTourFilterChange" value="{{tourPickerIndex}}">
+      <view class="filter-item">
+        <text>{{tourPickerIndex === 0 ? '全部行程' : tours[tourPickerIndex - 1].title || '全部行程'}}</text>
+        <text class="filter-arrow">▼</text>
+      </view>
+    </picker>
+    <text class="filter-reset" bindtap="onResetFilters" wx:if="{{statusFilter !== 'all' || tourFilter}}">重置</text>
+  </view>
+
+  <!-- 批量操作栏 -->
+  <view class="batch-bar" wx:if="{{batchMode}}">
+    <text class="batch-info">已选 {{selectedIds.length}} 项</text>
+    <view class="batch-actions">
+      <text class="batch-action-link" bindtap="batchSelectAll">全选</text>
+      <text class="batch-action-link export" bindtap="onExportToChat">导出到聊天</text>
+      <text class="batch-action-link danger" bindtap="batchDelete">批量删除</text>
+    </view>
+  </view>
+
+  <!-- 发票列表 -->
+  <view wx:if="{{filteredList.length > 0}}" class="invoice-list">
+    <view
+      class="invoice-card {{batchMode && selectedIds.indexOf(item.id) >= 0 ? 'batch-selected' : ''}}"
+      wx:for="{{filteredList}}"
+      wx:key="id"
+      bindtap="{{batchMode ? '' : 'onTapDetail'}}"
+      data-id="{{item.id}}"
+    >
+      <checkbox wx:if="{{batchMode}}" value="{{item.id}}" checked="{{selectedIds.indexOf(item.id) > -1}}" data-id="{{item.id}}" bindchange="onCheckChange" />
+
+      <view class="inv-header flex-between">
+        <view class="flex-row">
+          <text class="inv-type-tag tag-approved">{{item.status === 'approved' ? '已审核' : '发票'}}</text>
+          <text wx:if="{{item.ocrFailed}}" class="inv-ocr-failed-tag">待补充</text>
+          <text wx:if="{{item.verifyLabel}}" class="inv-verify-tag {{item.verifyClassName}}">{{item.verifyLabel}}</text>
+          <text class="inv-type-label tag-type-{{item.type}}">{{item.typeTagText}}</text>
+          <text class="inv-code text-ellipsis">{{item.invoiceCode || '--'}}</text>
+        </view>
+        <view class="flex-row">
+          <text class="inv-amount">¥{{item.amount || '0.00'}}</text>
+        </view>
+      </view>
+
+      <view class="inv-body">
+        <view class="inv-row">
+          <text class="inv-label">开票日期</text>
+          <text class="inv-value">{{item.invoiceDate || '--'}}</text>
+        </view>
+        <view class="inv-row">
+          <text class="inv-label">发票号码</text>
+          <text class="inv-value">{{item.invoiceNumber || '--'}}</text>
+        </view>
+        <view class="inv-row">
+          <text class="inv-label">卖方名称</text>
+          <text class="inv-value">{{item.sellerNameText}}</text>
+        </view>
+        <view class="inv-row">
+          <text class="inv-label">税额</text>
+          <text class="inv-value">{{item.taxText}}</text>
+        </view>
+      </view>
+
+      <view class="inv-footer flex-between" wx:if="{{!batchMode}}">
+        <text class="inv-time">{{item.createTimeText}}</text>
+        <view class="flex-row inv-actions">
+          <text class="action-link" catchtap="onPreview" data-id="{{item.id}}">预览</text>
+          <text class="action-link danger" catchtap="onDelete" data-id="{{item.id}}">删除</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载更多 -->
+  <view class="load-more" wx:if="{{hasMore}}">
+    <text>{{isLoadingMore ? '加载中...' : '上拉加载更多'}}</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{filteredList.length === 0 && !loading}}">
+    <text class="empty-icon">📄</text>
+    <text class="empty-text">暂无发票记录</text>
+    <text class="empty-sub">点击右上角 + 上传发票</text>
+  </view>
+</view>

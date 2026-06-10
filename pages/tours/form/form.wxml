@@ -1,0 +1,44 @@
+<view class="container">
+  <view class="form-card">
+    <view class="form-group">
+      <text class="form-label">行程名称 *</text>
+      <input class="form-input" value="{{name}}" placeholder="如：云南丽江6日游" data-field="name" bindinput="onInput"/>
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">团号</text>
+      <input class="form-input" value="{{code}}" placeholder="如：YN20260601" data-field="code" bindinput="onInput"/>
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">目的地</text>
+      <input class="form-input" value="{{destination}}" placeholder="如：丽江" data-field="destination" bindinput="onInput"/>
+    </view>
+
+    <view class="form-row">
+      <view class="form-group flex-1">
+        <text class="form-label">开始日期</text>
+        <picker mode="date" value="{{startDate}}" bindchange="onPickDate" data-field="startDate">
+          <view class="form-input">{{startDate || '请选择'}}</view>
+        </picker>
+      </view>
+      <view class="form-group flex-1">
+        <text class="form-label">结束日期</text>
+        <picker mode="date" value="{{endDate}}" bindchange="onPickDate" data-field="endDate">
+          <view class="form-input">{{endDate || '请选择'}}</view>
+        </picker>
+      </view>
+    </view>
+
+    <view class="form-group" wx:if="{{isEdit}}">
+      <text class="form-label">状态</text>
+      <picker mode="selector" range="{{statusOptions}}" range-key="label" value="{{status}}" bindchange="onPickStatus">
+        <view class="form-input">{{statusOptions[0].label}}</view>
+      </picker>
+    </view>
+
+    <button class="btn-primary" style="margin-top:24rpx;" loading="{{saving}}" bindtap="onSave">
+      {{isEdit ? '保存修改' : '创建行程'}}
+    </button>
+  </view>
+</view>

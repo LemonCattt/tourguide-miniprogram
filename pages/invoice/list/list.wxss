@@ -1,0 +1,317 @@
+/* 发票列表样式 */
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 24rpx;
+  background: #FFFFFF;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.search-input-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #F5F6FA;
+  border-radius: 12rpx;
+  padding: 12rpx 20rpx;
+  margin-right: 16rpx;
+}
+
+.search-icon {
+  font-size: 28rpx;
+  margin-right: 12rpx;
+}
+
+.search-input {
+  flex: 1;
+  font-size: 28rpx;
+}
+
+.upload-btn {
+  width: 72rpx;
+  height: 72rpx;
+  background: linear-gradient(135deg, #1A73E8, #4A90D9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 12rpx rgba(26, 115, 232, 0.3);
+}
+
+.upload-icon {
+  color: #FFFFFF;
+  font-size: 40rpx;
+  font-weight: 300;
+  margin-top: -2rpx;
+}
+
+/* 发票卡片 */
+.invoice-list {
+  padding: 16rpx 24rpx;
+}
+
+.invoice-card {
+  background: #FFFFFF;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.03);
+}
+
+.inv-header {
+  margin-bottom: 16rpx;
+}
+
+.inv-type-tag {
+  margin-right: 12rpx;
+}
+
+/* OCR 失败标签 */
+.inv-ocr-failed-tag {
+  display: inline-block;
+  padding: 2rpx 12rpx;
+  border-radius: 6rpx;
+  font-size: 20rpx;
+  font-weight: 500;
+  margin-right: 12rpx;
+  background: #FFF3CD;
+  color: #BA7517;
+}
+
+/* 核销查验标签 */
+.inv-verify-tag {
+  display: inline-block;
+  padding: 2rpx 12rpx;
+  border-radius: 6rpx;
+  font-size: 20rpx;
+  font-weight: 500;
+  margin-right: 12rpx;
+}
+
+.inv-verify-tag.verify-ok {
+  background: #D4EDDA;
+  color: #1D9E75;
+}
+
+.inv-verify-tag.verify-invalid {
+  background: #F8D7DA;
+  color: #C0392B;
+}
+
+.inv-verify-tag.verify-checked {
+  background: #E8F0FE;
+  color: #1A73E8;
+}
+
+.inv-code {
+  font-size: 24rpx;
+  color: #999;
+  max-width: 200rpx;
+}
+
+.inv-amount {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #FF3B30;
+  margin-left: 12rpx;
+}
+
+/* 发票类型标签 */
+.inv-type-label {
+  display: inline-block;
+  padding: 2rpx 12rpx;
+  border-radius: 6rpx;
+  font-size: 20rpx;
+  font-weight: 500;
+  margin-right: 12rpx;
+}
+
+.tag-type-vat_special { background: #E8F0FE; color: #1A73E8; }
+.tag-type-vat_normal { background: #E1F5EE; color: #1D9E75; }
+.tag-type-vat_electronic { background: #E6F1FB; color: #378ADD; }
+.tag-type-train_ticket { background: #FAEEDA; color: #BA7517; }
+.tag-type-taxi_receipt { background: #FAEEDA; color: #BA7517; }
+.tag-type-flight_itinerary { background: #F3E8FF; color: #7C3AED; }
+.tag-type-other { background: #F5F6FA; color: #888780; }
+
+.inv-body {
+  border-top: 1rpx solid #F0F0F0;
+  border-bottom: 1rpx solid #F0F0F0;
+  padding: 16rpx 0;
+  margin-bottom: 16rpx;
+}
+
+.inv-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6rpx 0;
+}
+
+.inv-label {
+  font-size: 24rpx;
+  color: #999;
+  white-space: nowrap;
+}
+
+.inv-value {
+  font-size: 26rpx;
+  color: #333;
+  max-width: 380rpx;
+  text-align: right;
+}
+
+.inv-footer {
+  /* styles in flex-between */
+}
+
+.inv-time {
+  font-size: 22rpx;
+  color: #BBB;
+}
+
+.inv-actions {
+  gap: 24rpx;
+}
+
+.action-link {
+  font-size: 24rpx;
+  color: #1A73E8;
+  padding: 8rpx 16rpx;
+}
+
+.action-link.danger {
+  color: #FF3B30;
+}
+
+/* 状态标签颜色 */
+.inv-type-tag.tag-primary { background: #E8F0FE; color: #1A73E8; }
+.inv-type-tag.tag-approved { background: #D4EDDA; color: #1D9E75; }
+
+/* 批量操作按钮 */
+.batch-btn {
+  width: auto;
+  height: 72rpx;
+  padding: 0 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.batch-icon {
+  font-size: 28rpx;
+  color: #1A73E8;
+  font-weight: 600;
+}
+
+.batch-cancel-btn {
+  padding: 0 20rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  color: #1A73E8;
+}
+
+/* 筛选栏 */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  padding: 12rpx 24rpx;
+  background: #FFFFFF;
+  border-bottom: 1rpx solid #F0F0F0;
+  gap: 16rpx;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  padding: 8rpx 20rpx;
+  background: #F5F6FA;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  color: #333;
+}
+
+.filter-arrow {
+  font-size: 18rpx;
+  margin-left: 8rpx;
+  color: #999;
+}
+
+.filter-reset {
+  font-size: 24rpx;
+  color: #1A73E8;
+  padding: 8rpx 16rpx;
+}
+
+/* 批量操作栏 */
+.batch-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 24rpx;
+  background: #FFF8E6;
+  border-bottom: 1rpx solid #F0E0B0;
+}
+
+.batch-info {
+  font-size: 26rpx;
+  color: #BA7517;
+}
+
+.batch-actions {
+  display: flex;
+  gap: 24rpx;
+}
+
+.batch-action-link {
+  font-size: 26rpx;
+  color: #1A73E8;
+  padding: 8rpx 16rpx;
+}
+
+.batch-action-link.danger {
+  color: #FF3B30;
+}
+
+.batch-action-link.export {
+  color: #1D9E75;
+  font-weight: 600;
+}
+
+/* 批量选中状态 */
+.invoice-card.batch-selected {
+  border: 3rpx solid #1D9E75;
+  background: #F0FAF5;
+  box-shadow: 0 0 0 2rpx rgba(29, 158, 117, 0.15);
+}
+
+.selector {
+  width: 40rpx; height: 40rpx;
+  border: 2rpx solid #C0C0C0;
+  border-radius: 6rpx;
+  margin-right: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  color: #999;
+  flex-shrink: 0;
+}
+.sel-checked {
+  background: #1D9E75;
+  border-color: #1D9E75;
+  color: #fff;
+}
+
+/* 加载更多 */
+.load-more {
+  text-align: center;
+  padding: 32rpx;
+  color: #CCC;
+  font-size: 24rpx;
+}

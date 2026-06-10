@@ -1,0 +1,48 @@
+.scheme-header {
+  padding: 28rpx;
+  background: #fff;
+  margin-bottom: 24rpx;
+}
+.scheme-name {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #2C2C2A;
+  display: block;
+}
+.scheme-stats {
+  font-size: 26rpx;
+  color: #888780;
+  margin-top: 6rpx;
+  display: block;
+}
+
+.room-card {
+  background: #fff;
+  border-radius: 16rpx;
+  margin: 0 24rpx 8rpx;
+  padding: 20rpx 24rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.room-left { flex: 1; }
+.room-no {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #2C2C2A;
+}
+.room-type {
+  font-size: 24rpx;
+  color: #888780;
+  margin-top: 4rpx;
+  display: block;
+}
+.room-members {
+  font-size: 28rpx;
+  color: #2C2C2A;
+  text-align: right;
+}
+.room-empty {
+  font-size: 26rpx;
+  color: #888780;
+}

@@ -1,0 +1,60 @@
+<view class="container">
+  <view class="card">
+    <view class="section-title">{{isEdit ? '编辑支出' : '记一笔'}}</view>
+
+    <!-- 行程 -->
+    <view class="form-item">
+      <text class="form-label">关联行程</text>
+      <picker mode="selector" range="{{tours}}" range-key="title" value="{{tourPickerIndex}}" bindchange="onTourChange">
+        <view class="picker-box">
+          <text wx:if="{{tours.length === 0}}">不关联</text>
+          <text wx:else>{{tours[tourPickerIndex].title}}</text>
+          <text class="picker-arrow">▼</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 金额 -->
+    <view class="form-item">
+      <text class="form-label">金额</text>
+      <view class="amount-input-box">
+        <text class="amount-symbol">¥</text>
+        <input class="amount-input" type="digit" placeholder="0.00" value="{{form.amount}}" bindinput="onInputAmount" />
+      </view>
+    </view>
+
+    <!-- 分类 -->
+    <view class="form-item">
+      <text class="form-label">分类</text>
+      <picker mode="selector" range="{{categories}}" range-key="label" value="{{categoryPickerIndex}}" bindchange="onCategoryChange">
+        <view class="picker-box">{{categories[categoryPickerIndex].label}}<text class="picker-arrow">▼</text></view>
+      </picker>
+    </view>
+
+    <!-- 费用类型 -->
+    <view class="form-item">
+      <text class="form-label">类型</text>
+      <picker mode="selector" range="{{types}}" range-key="label" value="{{typePickerIndex}}" bindchange="onTypeChange">
+        <view class="picker-box">{{types[typePickerIndex].label}}<text class="picker-arrow">▼</text></view>
+      </picker>
+    </view>
+
+    <!-- 日期 -->
+    <view class="form-item">
+      <text class="form-label">日期</text>
+      <picker mode="date" value="{{form.expenseDate}}" bindchange="onDateChange">
+        <view class="picker-box">{{form.expenseDate || '选择日期'}}<text class="picker-arrow">▼</text></view>
+      </picker>
+    </view>
+
+    <!-- 描述 -->
+    <view class="form-item">
+      <text class="form-label">描述</text>
+      <textarea class="desc-input" placeholder="例如：去程火车票" value="{{form.note}}" bindinput="onInputNote" maxlength="200" />
+    </view>
+  </view>
+
+  <button class="submit-btn" bindtap="submit" loading="{{submitting}}" disabled="{{submitting}}">
+    {{isEdit ? '保存修改' : '确认记录'}}
+  </button>
+</view>

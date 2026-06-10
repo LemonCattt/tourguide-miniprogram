@@ -1,0 +1,31 @@
+<view class="container">
+  <block wx:if="{{!loading}}">
+    <view class="group" wx:for="{{grouped}}" wx:key="destination">
+      <view class="group-header" data-dest="{{item.destination}}" bindtap="toggleGroup">
+        <view class="group-title">
+          <text class="group-icon">{{item.destination === '通用公告' ? '📢' : '📍'}}</text>
+          <text>{{item.destination}}</text>
+          <text class="group-count">({{item.count}})</text>
+        </view>
+        <text class="group-arrow {{expanded[item.destination] ? 'open' : ''}}">›</text>
+      </view>
+
+      <view wx:if="{{expanded[item.destination]}}" class="group-items">
+        <view class="ann-item" wx:for="{{item.items}}" wx:for-item="ann" wx:key="id" data-id="{{ann.id}}" bindtap="goDetail">
+          <view class="ann-title-row">
+            <text class="ann-title">{{ann.title}}</text>
+            <text class="ann-time">{{ann.timeText}}</text>
+          </view>
+          <text class="ann-preview">{{ann.previewText}}</text>
+          <view class="ann-tags" wx:if="{{ann.tags}}">
+            <text class="tag" wx:for="{{ann.tags}}" wx:for-item="t" wx:key="*this">{{t}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:if="{{grouped.length === 0}}">
+      <text class="empty-text">暂无公告</text>
+    </view>
+  </block>
+</view>

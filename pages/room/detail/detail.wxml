@@ -1,0 +1,34 @@
+<view class="container">
+  <view class="loading-more" wx:if="{{loading}}">加载中...</view>
+
+  <block wx:if="{{scheme}}">
+    <view class="scheme-header">
+      <text class="scheme-name">{{scheme.name || '分房方案'}}</text>
+      <text class="scheme-stats">{{scheme.totalGuests || 0}}人 · {{scheme.totalRooms || 0}}间 · {{scheme.assignedRooms || 0}}间已分配</text>
+    </view>
+
+    <view class="section">
+      <view class="flex-between" style="margin:0 28rpx 16rpx;">
+        <text class="section-title" style="margin:0;">房间列表</text>
+        <text class="btn-outline" style="font-size:24rpx;padding:8rpx 24rpx;" bindtap="goImport">导入名单</text>
+      </view>
+
+      <view class="room-card" wx:for="{{rooms}}" wx:key="id">
+        <view class="room-left">
+          <text class="room-no">{{item.roomNo || item.room_number || '未编号'}}</text>
+          <text class="room-type" wx:if="{{item.type}}">{{item.type}} · {{item.capacity || 2}}人间</text>
+        </view>
+        <view class="room-right">
+          <text class="room-members" wx:if="{{item.members}}">{{item.members}}</text>
+          <text class="room-empty" wx:else>空</text>
+        </view>
+      </view>
+
+      <view class="empty-state" wx:if="{{rooms.length === 0}}">
+        <text class="empty-icon">🏨</text>
+        <text class="empty-text">暂无房间数据</text>
+        <text class="empty-sub">请先导入客人名单</text>
+      </view>
+    </view>
+  </block>
+</view>

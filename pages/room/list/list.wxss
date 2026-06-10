@@ -1,0 +1,144 @@
+/* 分房列表 */
+
+.action-bar {
+  padding: 20rpx 24rpx;
+}
+
+.bar-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1A1A1A;
+}
+
+.import-btn {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #1A73E8, #4A90D9);
+  padding: 14rpx 28rpx;
+  border-radius: 32rpx;
+}
+
+.import-icon {
+  font-size: 24rpx;
+  margin-right: 6rpx;
+}
+
+.import-text {
+  font-size: 26rpx;
+  color: #FFFFFF;
+  font-weight: 500;
+}
+
+/* 任务卡片 */
+.task-list {
+  padding: 0 24rpx;
+}
+
+.task-card {
+  background: #FFFFFF;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.03);
+}
+
+.task-header {
+  margin-bottom: 20rpx;
+}
+
+.task-icon {
+  font-size: 44rpx;
+  margin-right: 16rpx;
+}
+
+.task-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.task-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1A1A1A;
+  margin-bottom: 4rpx;
+}
+
+.task-hotel {
+  font-size: 24rpx;
+  color: #999;
+  max-width: 300rpx;
+}
+
+.arrow {
+  font-size: 36rpx;
+  color: #CCC;
+}
+
+/* 统计数据 */
+.task-stats {
+  display: flex;
+  background: #F9FBFD;
+  border-radius: 12rpx;
+  padding: 20rpx 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.task-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-num {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1A73E8;
+  margin-bottom: 6rpx;
+}
+
+.stat-desc {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.stat-divider-v {
+  width: 1rpx;
+  height: 48rpx;
+  background: #E0E0E0;
+  align-self: center;
+}
+
+.task-footer {
+  /* styles in flex-between */
+}
+
+.task-time {
+  font-size: 22rpx;
+  color: #BBB;
+}
+
+.action-link {
+  font-size: 24rpx;
+  color: #1A73E8;
+  padding: 8rpx 16rpx;
+}
+
+.action-link.danger {
+  color: #FF3B30;
+}
+
+/* 空状态按钮 */
+.empty-btn {
+  margin-top: 32rpx;
+  padding: 16rpx 56rpx;
+  border-radius: 32rpx;
+  font-size: 28rpx;
+}
+
+.load-more {
+  text-align: center;
+  padding: 32rpx;
+  color: #CCC;
+  font-size: 24rpx;
+}
