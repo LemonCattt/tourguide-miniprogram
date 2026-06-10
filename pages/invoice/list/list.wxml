@@ -54,13 +54,13 @@
   <!-- 发票列表 -->
   <view wx:if="{{filteredList.length > 0}}" class="invoice-list">
     <view
-      class="invoice-card {{batchMode && selectedIds.indexOf(item.id) >= 0 ? 'batch-selected' : ''}}"
+      class="invoice-card {{batchMode && item._checked ? 'batch-selected' : ''}}"
       wx:for="{{filteredList}}"
       wx:key="id"
       bindtap="{{batchMode ? '' : 'onTapDetail'}}"
       data-id="{{item.id}}"
     >
-      <checkbox wx:if="{{batchMode}}" value="{{item.id}}" checked="{{selectedIds.indexOf(item.id) > -1}}" data-id="{{item.id}}" bindchange="onCheckChange" />
+      <checkbox wx:if="{{batchMode}}" value="{{item.id}}" checked="{{item._checked}}" data-id="{{item.id}}" bindchange="onCheckChange" />
 
       <view class="inv-header flex-between">
         <view class="flex-row">

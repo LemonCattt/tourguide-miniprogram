@@ -181,6 +181,7 @@ Page({
         isLoadingMore: false,
         hasMore: hasMore,
       });
+      this._syncCheckedState();
     } catch (err) {
       this.setData({ loading: false, isLoadingMore: false });
       wx.showToast({ title: '加载失败', icon: 'none' });
@@ -322,20 +323,21 @@ Page({
   toggleBatchMode() {
     var batchMode = !this.data.batchMode;
     this.setData({ batchMode: batchMode, selectedIds: [] });
+    this._syncCheckedState();
   },
 
   /** 切换选中（原生checkbox） */
   onCheckChange(e) {
     var id = String(e.currentTarget.dataset.id);
-    var checked = e.detail.value.length > 0;
     var selectedIds = this.data.selectedIds.slice();
     var idx = selectedIds.indexOf(id);
-    if (checked && idx < 0) {
-      selectedIds.push(id);
-    } else if (!checked && idx >= 0) {
+    if (idx >= 0) {
       selectedIds.splice(idx, 1);
+    } else {
+      selectedIds.push(id);
     }
     this.setData({ selectedIds: selectedIds });
+    this._syncCheckedState();
   },
 
   /** 切换选中（手动调用） */
@@ -350,12 +352,27 @@ Page({
     }
     console.log('[select] id=' + id + ' count=' + selectedIds.length);
     this.setData({ selectedIds: selectedIds });
+    this._syncCheckedState();
   },
 
   /** 全选当前列表 */
   batchSelectAll() {
     var allIds = this.data.filteredList.map(function(inv) { return String(inv.id); });
     this.setData({ selectedIds: allIds });
+    this._syncCheckedState();
+  },
+
+  /**
+   * 将 selectedIds 同步到 filteredList 每一项的 _checked 字段。
+   * WXML 中 checkbox 的 checked 绑定 {{item._checked}} 避免 indexOf 在模板表达式中不可用。
+   */
+  _syncCheckedState() {
+    var selectedIds = this.data.selectedIds;
+    var filteredList = this.data.filteredList;
+    for (var i = 0; i < filteredList.length; i++) {
+      filteredList[i]._checked = selectedIds.indexOf(filteredList[i].id) >= 0;
+    }
+    this.setData({ filteredList: filteredList });
   },
 
   /** 导出选中的发票到聊天 */
@@ -530,12 +547,14 @@ Page({
     this.setData({ keyword: keyword });
     var filteredList = this.filterByKeyword(this.data.list, keyword);
     this.setData({ filteredList: filteredList });
+    this._syncCheckedState();
   },
 
   /** 搜索确认 */
   onSearch() {
     var filteredList = this.filterByKeyword(this.data.list, this.data.keyword);
     this.setData({ filteredList: filteredList });
+    this._syncCheckedState();
   },
 
   /** 根据关键词过滤列表 */
